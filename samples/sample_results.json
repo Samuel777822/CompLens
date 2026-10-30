@@ -1,0 +1,675 @@
+[
+  {
+    "name": "Compliant biscuits",
+    "request": {
+      "text": "Crunchy Bites\nCream Biscuits\nNet Wt. 150 g\nMRP Rs. 30.00 (Inclusive of all taxes)\nMfg: 03/2026   Best Before 6 months from packing\nManufactured by: Sunrise Foods Pvt. Ltd., Plot 14, Industrial Area, Nashik, Maharashtra - 422010\nFor queries contact: 1800-123-4567 / care@sunrisefoods.com",
+      "category": "biscuits",
+      "pack_type": null
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "biscuits",
+      "pack_type": null,
+      "verdict": "COMPLIANT",
+      "summary": {
+        "PASS": 8,
+        "FAIL": 0,
+        "REVIEW": 0,
+        "NOT_APPLICABLE": 2,
+        "EXEMPT": 0
+      },
+      "exemption": null,
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "Text input: there is no OCR confidence to judge legibility from.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "English letters: 188, Devanagari letters: 0.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Manufactured by: Sunrise Foods Pvt. Ltd., Plot 14, Industrial Area, Nashik, Maharashtra - 422010",
+          "rule_reference": "Rule 6(1)(a)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "generic_name",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Biscuits",
+          "rule_reference": "Rule 6(1)(b)",
+          "detail": "Matched 'biscuit'.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "net_quantity",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "150 g",
+          "rule_reference": "Rule 6(1)(c)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mfg_date",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "03/2026",
+          "rule_reference": "Rule 6(1)(d)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mrp",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "MRP Rs. 30.00 (Inclusive of all taxes",
+          "rule_reference": "Rule 6(1)(e)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "dimensions",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(f)",
+          "detail": "Dimensions are only required for size-dependent goods (bedsheets, towels).",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "1800-123-4567",
+          "rule_reference": "Rule 6(2)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "pack_size",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "150 g",
+          "rule_reference": "Rule 5 / Second Schedule",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "Crunchy Bites\nCream Biscuits\nNet Wt. 150 g\nMRP Rs. 30.00 (Inclusive of all taxes)\nMfg: 03/2026   Best Before 6 months from packing\nManufactured by: Sunrise Foods Pvt. Ltd., Plot 14, Industrial Area, Nashik, Maharashtra - 422010\nFor queries contact: 1800-123-4567 / care@sunrisefoods.com",
+      "avg_ocr_confidence": null
+    }
+  },
+  {
+    "name": "Tea with several violations",
+    "request": {
+      "text": "Chai Garden Premium\nTea\nNet Wt. approx 120g\nMRP Rs. 85.00\nMarketed by: Chai Garden Ltd., Kolkata\nPkd: Jan 2026",
+      "category": "tea",
+      "pack_type": null
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "tea",
+      "pack_type": null,
+      "verdict": "NON_COMPLIANT",
+      "summary": {
+        "PASS": 3,
+        "FAIL": 5,
+        "REVIEW": 0,
+        "NOT_APPLICABLE": 2,
+        "EXEMPT": 0
+      },
+      "exemption": null,
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "Text input: there is no OCR confidence to judge legibility from.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "English letters: 73, Devanagari letters: 0.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "FAIL",
+          "violation_code": "FORMAT_ERROR",
+          "detected_text": "Marketed by: Chai Garden Ltd., Kolkata Pkd: Jan 2026",
+          "rule_reference": "Rule 6(1)(a)",
+          "detail": "Only 'Marketed/Distributed by' is stated. That is not the same as the manufacturer or packer.",
+          "sub_case": "MARKETED_BY_ONLY",
+          "confidence": 1.0
+        },
+        {
+          "field": "generic_name",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Tea",
+          "rule_reference": "Rule 6(1)(b)",
+          "detail": "Matched 'tea'.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "net_quantity",
+          "status": "FAIL",
+          "violation_code": "VAGUE_LANGUAGE",
+          "detected_text": "approx 120g",
+          "rule_reference": "Rule 6(1)(c)",
+          "detail": "Banned qualifier 'approx'. Net quantity must be a definite number.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mfg_date",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Jan 2026",
+          "rule_reference": "Rule 6(1)(d)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mrp",
+          "status": "FAIL",
+          "violation_code": "FORMAT_ERROR",
+          "detected_text": "MRP Rs. 85.00",
+          "rule_reference": "Rule 6(1)(e)",
+          "detail": "Price is present but 'inclusive of all taxes' is not stated next to it.",
+          "sub_case": "MISSING_TAX_PHRASE",
+          "confidence": 1.0
+        },
+        {
+          "field": "dimensions",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(f)",
+          "detail": "Dimensions are only required for size-dependent goods (bedsheets, towels).",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "FAIL",
+          "violation_code": "MISSING",
+          "detected_text": null,
+          "rule_reference": "Rule 6(2)",
+          "detail": "No phone number, email or care address found.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "pack_size",
+          "status": "FAIL",
+          "violation_code": "NONSTANDARD_PACK",
+          "detected_text": "approx 120g",
+          "rule_reference": "Rule 5 / Second Schedule",
+          "detail": "Not a standard size for this category and no 'Non-standard size' disclaimer found. ",
+          "sub_case": null,
+          "confidence": 1.0
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "Chai Garden Premium\nTea\nNet Wt. approx 120g\nMRP Rs. 85.00\nMarketed by: Chai Garden Ltd., Kolkata\nPkd: Jan 2026",
+      "avg_ocr_confidence": null
+    }
+  },
+  {
+    "name": "Brand-only soft drink (330 ml can)",
+    "request": {
+      "text": "ZOOMO BLAST\nNet Vol. 330 ml\nMRP Rs. 20.00 (Incl. of all taxes)\nMfd: 04/2026\nManufactured by: Zoomo Industries Pvt. Ltd., Pune, Maharashtra - 411001\nCustomer care: 1800 233 4455",
+      "category": "aerated_drinks",
+      "pack_type": "can"
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "aerated_drinks",
+      "pack_type": "can",
+      "verdict": "NON_COMPLIANT",
+      "summary": {
+        "PASS": 7,
+        "FAIL": 1,
+        "REVIEW": 0,
+        "NOT_APPLICABLE": 2,
+        "EXEMPT": 0
+      },
+      "exemption": null,
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "Text input: there is no OCR confidence to judge legibility from.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "English letters: 102, Devanagari letters: 0.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Manufactured by: Zoomo Industries Pvt. Ltd., Pune, Maharashtra - 411001",
+          "rule_reference": "Rule 6(1)(a)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "generic_name",
+          "status": "FAIL",
+          "violation_code": "MISSING",
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(b)",
+          "detail": "No plain-language product name found, only a brand name may be present.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "net_quantity",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "330 ml",
+          "rule_reference": "Rule 6(1)(c)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mfg_date",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "04/2026",
+          "rule_reference": "Rule 6(1)(d)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mrp",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "MRP Rs. 20.00 (Incl. of all taxes",
+          "rule_reference": "Rule 6(1)(e)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "dimensions",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(f)",
+          "detail": "Dimensions are only required for size-dependent goods (bedsheets, towels).",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "1800 233 4455",
+          "rule_reference": "Rule 6(2)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "pack_size",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "330 ml",
+          "rule_reference": "Rule 5 / Second Schedule",
+          "detail": "330 ml is standard for cans only",
+          "sub_case": null,
+          "confidence": 1.0
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "ZOOMO BLAST\nNet Vol. 330 ml\nMRP Rs. 20.00 (Incl. of all taxes)\nMfd: 04/2026\nManufactured by: Zoomo Industries Pvt. Ltd., Pune, Maharashtra - 411001\nCustomer care: 1800 233 4455",
+      "avg_ocr_confidence": null
+    }
+  },
+  {
+    "name": "Tiny sachet (exempt)",
+    "request": {
+      "text": "Glow Shampoo\nNet Vol. 8 ml",
+      "category": "other",
+      "pack_type": null
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "other",
+      "pack_type": null,
+      "verdict": "EXEMPT",
+      "summary": {
+        "PASS": 0,
+        "FAIL": 0,
+        "REVIEW": 0,
+        "NOT_APPLICABLE": 0,
+        "EXEMPT": 10
+      },
+      "exemption": {
+        "level": "FULL",
+        "reason": "Net quantity 8ml is 10ml or less (very small package)"
+      },
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "generic_name",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "net_quantity",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "mfg_date",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "mrp",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "dimensions",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "pack_size",
+          "status": "EXEMPT",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 26",
+          "detail": "Net quantity 8ml is 10ml or less (very small package)",
+          "sub_case": null,
+          "confidence": null
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "Glow Shampoo\nNet Vol. 8 ml",
+      "avg_ocr_confidence": null
+    }
+  },
+  {
+    "name": "Quantity in dozen",
+    "request": {
+      "text": "Fresh Farm Eggs\nNet Qty: 2 dozen\nMRP Rs. 160.00 (Inclusive of all taxes)\nPacked by: Green Valley Farms, Hosur, Tamil Nadu - 635109\nPkd: 10/2026\nCall 080 2345 6789",
+      "category": "other",
+      "pack_type": null
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "other",
+      "pack_type": null,
+      "verdict": "NON_COMPLIANT",
+      "summary": {
+        "PASS": 6,
+        "FAIL": 1,
+        "REVIEW": 0,
+        "NOT_APPLICABLE": 3,
+        "EXEMPT": 0
+      },
+      "exemption": null,
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "Text input: there is no OCR confidence to judge legibility from.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "English letters: 93, Devanagari letters: 0.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Packed by: Green Valley Farms, Hosur, Tamil Nadu - 635109",
+          "rule_reference": "Rule 6(1)(a)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "generic_name",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Eggs",
+          "rule_reference": "Rule 6(1)(b)",
+          "detail": "Matched 'egg'.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "net_quantity",
+          "status": "FAIL",
+          "violation_code": "UNIT_ERROR",
+          "detected_text": "2 dozen",
+          "rule_reference": "Rule 6(1)(c) / Rule 13(4)",
+          "detail": "Declared in 'dozen', which is not a permitted unit for net quantity.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mfg_date",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "10/2026",
+          "rule_reference": "Rule 6(1)(d)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mrp",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "MRP Rs. 160.00 (Inclusive of all taxes",
+          "rule_reference": "Rule 6(1)(e)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "dimensions",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(f)",
+          "detail": "Dimensions are only required for size-dependent goods (bedsheets, towels).",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "080 2345 6789",
+          "rule_reference": "Rule 6(2)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "pack_size",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 5 / Second Schedule",
+          "detail": "No standard pack size table for this category.",
+          "sub_case": null,
+          "confidence": null
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "Fresh Farm Eggs\nNet Qty: 2 dozen\nMRP Rs. 160.00 (Inclusive of all taxes)\nPacked by: Green Valley Farms, Hosur, Tamil Nadu - 635109\nPkd: 10/2026\nCall 080 2345 6789",
+      "avg_ocr_confidence": null
+    }
+  }
+]

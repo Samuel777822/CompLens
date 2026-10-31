@@ -40,6 +40,11 @@ class ScanResult(BaseModel):
     limitations: List[str]
     raw_text: str
     avg_ocr_confidence: Optional[float] = None
+    # things the user should know about the scan itself (blurry photo, rotated, part of the label only...)
+    warnings: List[str] = []
+    images_used: int = 1
+    # what the checker decided the product is and how its net quantity is measured
+    product: Optional[Dict[str, str]] = None
 
 
 class TextCheckRequest(BaseModel):

@@ -3,68 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PackCheck</title>
-<style>
-:root{
-  --ink:#12263f; --muted:#5a6a7c; --paper:#eef1f4; --card:#fff; --rule:#d3dae2;
-  --pass:#1d7a4e; --fail:#b8322a; --review:#a66a00; --na:#7b8794;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans)}
-header{background:var(--ink);color:#fff;padding:18px 24px}
-header h1{margin:0;font:600 26px/1.1 var(--serif);letter-spacing:.2px}
-header p{margin:4px 0 0;color:#b9c6d6;font-size:14px}
-main{max-width:1080px;margin:0 auto;padding:20px;display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
-@media(max-width:820px){main{grid-template-columns:1fr}}
-.panel{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:16px}
-.tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--rule)}
-.tabs button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:8px 4px;font:inherit;color:var(--muted);cursor:pointer}
-.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--ink);font-weight:600}
-label{display:block;font-weight:600;margin:12px 0 4px}
-select,textarea,input[type=file]{width:100%;font:inherit;padding:8px;border:1px solid var(--rule);border-radius:4px;background:#fff;color:var(--ink)}
-textarea{min-height:170px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
-.drop{border:2px dashed var(--rule);border-radius:6px;padding:16px;text-align:center;color:var(--muted);cursor:pointer}
-.drop img{max-width:100%;max-height:220px;border-radius:4px;display:block;margin:0 auto 8px}
-button.go{width:100%;margin-top:16px;background:var(--ink);color:#fff;border:0;border-radius:4px;padding:11px;font:600 15px var(--sans);cursor:pointer}
-button.go:disabled{opacity:.5;cursor:wait}
-:focus-visible{outline:3px solid #3b82f6;outline-offset:2px}
-.hint{color:var(--muted);font-size:13px;margin-top:6px}
-.samples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.samples button{background:#fff;border:1px solid var(--rule);border-radius:99px;padding:4px 10px;font:13px var(--sans);cursor:pointer}
-.empty{color:var(--muted);padding:40px 12px;text-align:center}
-.err{background:#fdecea;color:var(--fail);border:1px solid #f3c1bc;border-radius:4px;padding:10px 12px;margin-bottom:12px}
-.verdict{display:flex;align-items:center;gap:22px;padding-bottom:16px;border-bottom:1px solid var(--rule);margin-bottom:8px}
-.stamp{flex:none;transform:rotate(-5deg);border:4px double currentColor;border-radius:6px;padding:8px 16px;
-  font:700 22px/1 var(--serif);text-transform:uppercase;letter-spacing:1.5px;opacity:.92}
-.stamp.COMPLIANT{color:var(--pass)} .stamp.NON_COMPLIANT{color:var(--fail)}
-.stamp.NEEDS_REVIEW{color:var(--review)} .stamp.EXEMPT{color:var(--ink)}
-.verdict h2{margin:0 0 2px;font:600 19px var(--serif)}
-.verdict p{margin:0;color:var(--muted)}
-.row{display:grid;grid-template-columns:6px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule)}
-.row:last-child{border-bottom:0}
-.bar{border-radius:3px;background:var(--na)}
-.row.PASS .bar{background:var(--pass)} .row.FAIL .bar{background:var(--fail)} .row.REVIEW .bar{background:var(--review)}
-.top{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
-.name{font-weight:600}
-.chip{font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
-.chip.PASS{color:var(--pass)} .chip.FAIL{color:var(--fail)} .chip.REVIEW{color:var(--review)}
-.chip.NOT_APPLICABLE,.chip.EXEMPT{color:var(--na)}
-.ref{margin-left:auto;font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
-.found{margin:4px 0 0;font:13px ui-monospace,Menlo,Consolas,monospace;background:#f5f7f9;border-radius:3px;padding:3px 6px;display:inline-block;word-break:break-word}
-.detail{margin:4px 0 0;color:var(--muted)}
-details{margin-top:14px;color:var(--muted)}
-details pre{white-space:pre-wrap;background:#f5f7f9;padding:10px;border-radius:4px;font-size:12px;color:var(--ink)}
-details ul{padding-left:18px}
-.hist{margin-top:16px}
-.hist button{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--rule);padding:8px 0;font:13px var(--sans);color:var(--ink);cursor:pointer}
-@media(prefers-reduced-motion:no-preference){.stamp{animation:thud .35s ease-out}@keyframes thud{from{transform:rotate(-5deg) scale(1.5);opacity:0}}}
-</style>
+<title>CompLens</title>
+<meta name="theme-color" content="#050706">
+<link rel="icon" href="static/img/favicon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Roboto:wght@400;500;700&family=Silkscreen&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/ui.css?v=3">
 </head>
 <body>
+<canvas id="rain" aria-hidden="true"></canvas>
 <header>
-  <h1>PackCheck</h1>
+  <h1><img src="static/img/logo.png?v=3" alt="CompLens"></h1>
   <p>Check a product label against the Legal Metrology (Packaged Commodities) Rules, 2011</p>
 </header>
 <main>
@@ -74,12 +23,11 @@ details ul{padding-left:18px}
       <button role="tab" id="tab-text" aria-selected="false">Paste text</button>
     </div>
     <div id="pane-photo">
-      <label for="file">Label photo</label>
-      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a photo">
-        <div id="dropText">Tap to choose a photo of the label</div>
-      </div>
+      <label>Label photos</label>
+      <div id="slots"></div>
+      <button type="button" class="add" id="addSlot">+ Add another photo (side, base, flap)</button>
       <input id="file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-      <p class="hint">Flat, well lit, text in focus. Glare and curved packs lower accuracy.</p>
+      <p class="hint">Declarations are often split across the pack. Add the front and the back and they are checked together as one label. One photo is fine if everything is on one side.</p>
     </div>
     <div id="pane-text" hidden>
       <label for="text">Label text</label>
@@ -95,14 +43,18 @@ details ul{padding-left:18px}
     </select>
     <p class="hint">Pack type only matters for 330 ml drinks, which are a standard size in cans only.</p>
     <button class="go" id="go">Check label</button>
+    <p class="hint" id="warm" hidden>The server has just started and is loading its text-reading models (about a minute). Pasted-text checks work now; a photo check will simply wait until it is ready.</p>
     <div class="hist" id="hist"></div>
   </section>
 
   <section class="panel" aria-live="polite" id="out">
-    <div class="empty">Choose a category and add a label to see the report.</div>
+    <div class="empty"><img src="static/img/eye.png?v=3" alt=""><p>Choose a category and add a label to see the report.</p></div>
   </section>
 </main>
+<footer class="ver">CompLens UI v3</footer>
+<script src="static/rain.js?v=3"></script>
 <script>
+const EMPTY = `<div class="empty"><img src="static/img/eye.png?v=3" alt=""><p>Choose a category and add a label to see the report.</p></div>`;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const LABELS = {legibility:"Legibility", language:"Language", manufacturer:"Manufacturer, packer or importer",
@@ -111,7 +63,7 @@ const LABELS = {legibility:"Legibility", language:"Language", manufacturer:"Manu
 const STATUS = {PASS:"Pass", FAIL:"Fail", REVIEW:"Needs review", NOT_APPLICABLE:"Not applicable", EXEMPT:"Exempt"};
 const STAMP = {COMPLIANT:"Compliant", NON_COMPLIANT:"Non-compliant", NEEDS_REVIEW:"Needs review", EXEMPT:"Exempt"};
 const ORDER = {FAIL:0, REVIEW:1, PASS:2, EXEMPT:3, NOT_APPLICABLE:4};
-let mode = "photo", file = null, samples = [];
+let mode = "photo", slots = [{name:"Front"},{name:"Back"}], pickIdx = 0, samples = [];
 
 function setMode(m){
   mode = m;
@@ -119,13 +71,21 @@ function setMode(m){
   $("#pane-photo").hidden = m!=="photo"; $("#pane-text").hidden = m!=="text";
 }
 $("#tab-photo").onclick = () => setMode("photo"); $("#tab-text").onclick = () => setMode("text");
-$("#drop").onclick = () => $("#file").click();
-$("#drop").onkeydown = e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); $("#file").click(); } };
+function renderSlots(){
+  $("#slots").innerHTML = slots.map((sl,i) => `<div class="slot"><div class="nm">${esc(sl.name)}</div>
+    <button type="button" class="pick" data-i="${i}" aria-label="Choose ${esc(sl.name)} photo">${sl.url ? `<img src="${sl.url}" alt="${esc(sl.name)}">` : "Tap to choose a photo"}</button>
+    ${sl.file || i >= 2 ? `<button type="button" class="rm" data-rm="${i}">Remove</button>` : "<span></span>"}</div>`).join("");
+  $("#slots").querySelectorAll(".pick").forEach(b => b.onclick = () => { pickIdx = +b.dataset.i; $("#file").click(); });
+  $("#slots").querySelectorAll(".rm").forEach(b => b.onclick = () => {
+    const i = +b.dataset.rm; if (i < 2) slots[i] = {name: slots[i].name}; else slots.splice(i, 1); renderSlots(); });
+  $("#addSlot").hidden = slots.length >= 6;
+}
 $("#file").onchange = e => {
-  file = e.target.files[0]; if (!file) return;
-  const url = URL.createObjectURL(file);
-  $("#drop").innerHTML = `<img src="${url}" alt="Selected label"><div>${esc(file.name)}. Tap to change.</div>`;
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  slots[pickIdx] = {name: slots[pickIdx].name, file: f, url: URL.createObjectURL(f)}; renderSlots();
 };
+$("#addSlot").onclick = () => { slots.push({name: "Photo " + (slots.length + 1)}); renderSlots(); };
+renderSlots();
 
 function showError(msg){ $("#out").innerHTML = `<div class="err">${esc(msg)}</div>`; }
 
@@ -141,6 +101,9 @@ function render(r){
   $("#out").innerHTML = `
     <div class="verdict"><div class="stamp ${r.verdict}">${STAMP[r.verdict]}</div>
       <div><h2>${esc(headline)}</h2><p>${esc(sub)}</p></div></div>
+    ${r.product ? `<p class="prod"><b>Product:</b> ${esc(r.product.category_label)} (${esc(r.product.source)})` +
+      (r.product.measure ? `. Net quantity is declared as ${esc(r.product.net_quantity_unit)}. ${esc(r.product.rule7_note)}` : "") + `</p>` : ""}
+    ${(r.warnings||[]).map(w => `<div class="warn">${esc(w)}</div>`).join("")}
     ${f.map(x => `
       <div class="row ${x.status}"><div class="bar"></div><div>
         <div class="top"><span class="name">${esc(LABELS[x.field]||x.field)}</span>
@@ -157,18 +120,41 @@ function render(r){
 async function call(url, opts){
   const res = await fetch(url, opts);
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.detail || `Request failed (${res.status})`);
+  if (!res.ok) {
+    const d = body.detail;  // FastAPI sends a string, or a list of validation errors
+    throw new Error(typeof d === "string" ? d : Array.isArray(d) ? d.map(x => x.msg).join("; ") : `Request failed (${res.status})`);
+  }
   return body;
 }
 
+
+// Phone photos can be 10 MB+. Shrink each one in the browser before upload so it also sends fast on a weak network.
+// 2.5 MB per photo keeps label text sharp (longest side stays up to 2200 px).
+async function shrink(file, budget){
+  try {
+    if (file.size <= budget) return file;
+    const bmp = await createImageBitmap(file, {imageOrientation: "from-image"});
+    for (const max of [2200, 1800, 1500, 1200]) for (const q of [.85, .72, .6]) {
+      const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+      const cv = Object.assign(document.createElement("canvas"), {width: Math.round(bmp.width*k), height: Math.round(bmp.height*k)});
+      cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", q));
+      if (blob && blob.size <= budget) return new File([blob], file.name.replace(/\.\w+$/, "") + ".jpg", {type: "image/jpeg"});
+    }
+  } catch {}
+  return file;
+}
+const shrinkAll = fs => Promise.all(fs.map(f => shrink(f, 2500000)));
+
 $("#go").onclick = async () => {
   const category = $("#category").value, pack = $("#pack").value;
-  const btn = $("#go"); btn.disabled = true; btn.textContent = "Checking";
+  const btn = $("#go"); btn.disabled = true; btn.textContent = "Scanning"; $("#out").classList.add("busy");
   try {
     let r;
     if (mode === "photo") {
-      if (!file) throw new Error("Choose a photo of the label first.");
-      const fd = new FormData(); fd.append("file", file); fd.append("category", category);
+      const files = await shrinkAll(slots.filter(x => x.file).map(x => x.file));
+      if (!files.length) throw new Error("Choose a photo of the label first (front, back, or both).");
+      const fd = new FormData(); files.forEach(f => fd.append("files", f)); fd.append("category", category);
       if (pack) fd.append("pack_type", pack);
       r = await call("/api/scan", {method:"POST", body: fd});
     } else {
@@ -179,12 +165,12 @@ $("#go").onclick = async () => {
     }
     render(r); loadHistory();
   } catch (e) { showError(e.message); }
-  finally { btn.disabled = false; btn.textContent = "Check label"; }
+  finally { btn.disabled = false; btn.textContent = "Check label"; $("#out").classList.remove("busy"); }
 };
 
 async function loadHistory(){
   try {
-    const h = await call("/api/history?limit=8");
+    const h = await call("/api/history?limit=10");
     if (!h.enabled || !h.scans.length) { $("#hist").innerHTML = ""; return; }
     $("#hist").innerHTML = `<label>Recent checks</label>` + h.scans.map(s =>
       `<button data-id="${esc(s.id)}">${esc(STAMP[s.verdict])}: ${esc(s.category)}, ${new Date(s.created_at).toLocaleString()}</button>`).join("");
@@ -192,6 +178,17 @@ async function loadHistory(){
       try { render(await call("/api/scans/" + b.dataset.id)); } catch(e){ showError(e.message); } });
   } catch {}
 }
+
+// After a server restart the OCR models load for a short while. Say so instead of leaving people guessing.
+async function checkWarm(){
+  try {
+    const h = await (await fetch("/health", {cache: "no-store"})).json();
+    const loading = !!h.ocr && h.ocr.status === "loading";
+    $("#warm").hidden = !loading;
+    if (loading) setTimeout(checkWarm, 3000);
+  } catch {}
+}
+checkWarm();
 
 (async () => {
   try {

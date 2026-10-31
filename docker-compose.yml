@@ -1,0 +1,39 @@
+# Runs the whole site with one command:   docker compose up -d --build
+#   app    = CompLens (FastAPI + EasyOCR), always on, restarts itself after a crash or a server reboot
+#   caddy  = the front door: serves your site on ports 80/443 and gets a free HTTPS certificate by itself
+name: complens
+
+services:
+  app:
+    build: .
+    image: complens:latest
+    restart: unless-stopped
+    init: true
+    env_file: .env              # your Supabase keys and settings (see .env.example)
+    environment:
+      PORT: "8000"
+    expose:
+      - "8000"                  # reachable only by Caddy, not from the internet
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }   # logs can never fill the disk
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # ":80" = plain http on the server's IP address.  "yourname.duckdns.org" = automatic HTTPS.
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data        # keeps the HTTPS certificate across restarts
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

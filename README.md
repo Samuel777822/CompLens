@@ -1,10 +1,11 @@
-# PackCheck
+# CompLens
 
 Checks a photo of a product label against the **Legal Metrology (Packaged Commodities) Rules, 2011** and
-flags each violation with the exact rule it breaks. Built from the team's *PackCheck Compliance Rulebook* (SIH26034).
+flags each violation with the exact rule it breaks. Built from the team's *CompLens Compliance Rulebook* (SIH26034).
 
 ```
-photo -> OpenCV clean-up -> EasyOCR (en + hi) -> field extraction (regex) -> rules engine -> JSON report (+ Supabase log)
+photo(s) -> OpenCV clean-up (3 variants) -> EasyOCR (en+hi, then en) -> row/column text views -> product detection
+      -> field extraction -> rules engine -> JSON report (+ Supabase log)
 ```
 
 ## Run it
@@ -17,9 +18,15 @@ uvicorn app.main:app --reload
 ```
 
 Open http://localhost:8000 (web UI) or http://localhost:8000/docs (API docs).
-The first photo scan downloads the EasyOCR model weights (one time, needs internet).
+The first start downloads the EasyOCR model weights (one time, needs internet) and then loads them in the background;
+`GET /health` shows `ocr.status` (`loading`, then `ready`).
 
 No Supabase yet? Leave those env vars empty. Everything works; scans just are not logged.
+
+## Deploying (Supabase + GitHub + an always-on Docker server)
+Full step-by-step (Supabase, GitHub, a small server, Docker, HTTPS) in [DEPLOY-PYCHARM-AZURE.md](DEPLOY-PYCHARM-AZURE.md).
+The app ships as a Docker image (`Dockerfile`) plus `docker-compose.yml` (app + Caddy web server), so it runs the same on any VPS.
+It was moved off Vercel because EasyOCR + PyTorch need about 2 GB, and serverless hosts unload the app when idle (slow cold starts).
 
 ## Supabase (optional)
 
@@ -30,7 +37,7 @@ No Supabase yet? Leave those env vars empty. Everything works; scans just are no
 
 | Method | Path | What it does |
 |---|---|---|
-| POST | `/api/scan` | multipart: `file` (jpg/png/webp), `category`, optional `pack_type` (`can`/`bottle`/`other`) |
+| POST | `/api/scan` | multipart: one or more `files` (jpg/png/webp: front, back, spine are checked as ONE label), `category` (default `auto`), optional `pack_type` (`can`/`bottle`/`other`) |
 | POST | `/api/check-text` | JSON `{text, category, pack_type}`. Rules engine only, no OCR. Best for testing |
 | GET | `/api/categories` | category keys for the dropdown |
 | GET | `/api/samples` | demo labels |
@@ -54,26 +61,31 @@ Overall `verdict`: COMPLIANT, NON_COMPLIANT, NEEDS_REVIEW, EXEMPT. Full examples
 
 | File | Rulebook part |
 |---|---|
+| `app/classify.py` | what product is this, and how is its quantity measured (weight / volume / count / length / area; Table I vs II) |
+| `app/pipeline.py` | multi-pass OCR, row/column views, rotation fix, multi-photo merge, best-report selection |
 | `app/extract.py` | regex finders for each field (all text-in, testable without images) |
 | `app/engine.py` | one check function per rule + Rule 26 exemptions, run in the rulebook's order |
 | `app/data.py` | categories, standard pack-size tables (Part C), exemption lists, limitations text |
 | `app/preprocess.py` / `app/ocr.py` | OpenCV clean-up, EasyOCR + merging boxes into lines |
 | `app/db.py`, `supabase/schema.sql` | audit log + image storage |
-| `static/index.html` | web UI (served by FastAPI; calls the API above) |
+| `public/index.html` | web UI (served by FastAPI; calls the API above) |
 
 Order of checks: exemptions (Rule 26) -> legibility/language (Rule 9) -> Rule 6 fields -> pack size (Rule 5).
 
 ## Tests
 
 ```bash
-pytest -q          # 81 tests: every PASS/FAIL example from the rulebook plus edge cases
+pytest -q          # 100+ tests: every PASS/FAIL example from the rulebook plus edge cases
 python -m scripts.run_samples      # regenerates samples/sample_results.json
 ```
 
 ## Decisions and known limits (say these out loud in the demo)
 
-- **Rule 7 and 8 are not checked.** A photo has no real-world scale. Stated limitation, per the rulebook.
-- **Category comes from the user** (dropdown), as the rulebook suggests. The OCR text alone rarely says "this is tea".
+- **Rule 7 and 8 (font size / spacing) are skipped for EVERY product, and only those.** A photo has no real-world scale. The product is still fully recognised: the report says which table (I or II) the size rule would use.
+- **Any product is understood.** Category `auto` (default) detects it from the label text; if it is not a listed commodity, the unit of the net quantity decides how it is measured (g/kg = weight, ml/l = volume, pages/pcs/pairs = count, m = length, sq m = area). A notebook's net quantity is its page count.
+- **Category**: `auto` detects it; picking one yourself overrides it (a warning appears if the label text disagrees). Exemption categories (fast food, scheduled drugs, agri produce) are never guessed.
+- **Manufacturer** is accepted as a name + full address with PIN even with no "Manufactured by" wording (logo + address is how most notebooks do it). It is noted, not silently trusted.
+- **OCR digit fix**: the Hindi model returns digits as Devanagari/Bengali numerals; they are normalised to 0-9 before any rule runs.
 - **Low OCR confidence never silently passes or fails.** It becomes REVIEW / LOW_CONFIDENCE. A field that is
   "missing" on a blurry photo is also REVIEW, because the text may just not have been read.
 - **"Marketed by" only** is flagged as FORMAT_ERROR with `sub_case: MARKETED_BY_ONLY`. Same for importer without

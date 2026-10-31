@@ -21,3 +21,24 @@ def test_big_images_are_downscaled():
 def test_bad_bytes():
     with pytest.raises(ValueError):
         decode_image(b"junk")
+
+
+def test_file_type_is_sniffed_from_bytes():
+    from app.preprocess import sniff_image_type
+    assert sniff_image_type(b"\xff\xd8\xff\xe0abc") == "image/jpeg"
+    assert sniff_image_type(b"\x89PNG\r\n\x1a\nxxxx") == "image/png"
+    assert sniff_image_type(b"RIFF1234WEBPVP8 ") == "image/webp"
+    assert sniff_image_type(b"hello world") == ""
+
+
+def test_variants_and_rotation():
+    from app.preprocess import rotate, variants
+    img = np.full((200, 600, 3), 128, np.uint8)
+    names = [n for n, _ in variants(img)]
+    assert names == ["clean", "color", "sharp"]
+    assert rotate(img, 1).shape[:2] == (600, 200) and rotate(img, 2).shape == img.shape
+
+
+def test_quality_warnings_flag_dark_and_blank():
+    from app.preprocess import quality_warnings
+    assert quality_warnings(np.zeros((300, 300, 3), np.uint8))

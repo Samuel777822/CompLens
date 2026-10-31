@@ -1,0 +1,11 @@
+# Caddy = the web server in front of CompLens.
+# {$SITE_ADDRESS} comes from your .env file:
+#   :80                      -> plain http, reachable at http://YOUR-SERVER-IP
+#   yourname.duckdns.org     -> https, Caddy gets and renews the certificate automatically
+{$SITE_ADDRESS} {
+	encode gzip
+	request_body {
+		max_size 60MB
+	}
+	reverse_proxy app:8000
+}

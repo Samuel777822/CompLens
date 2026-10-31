@@ -11,14 +11,33 @@ import httpx
 from . import config
 from .models import ScanResult
 
-log = logging.getLogger("packcheck.db")
+log = logging.getLogger("complens.db")
 _EXT = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}
 
 
 def _h(extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-    h = {"apikey": config.SUPABASE_SERVICE_KEY, "Authorization": f"Bearer {config.SUPABASE_SERVICE_KEY}"}
+    key = config.SUPABASE_SERVICE_KEY
+    h = {"apikey": key}
+    if not key.startswith("sb_"):  # legacy service_role keys are JWTs; new sb_secret_ keys are not
+        h["Authorization"] = f"Bearer {key}"
     h.update(extra or {})
     return h
+
+
+def _prune(c: httpx.Client) -> None:
+    """Make room for one new row: drop every scan beyond the newest KEEP_SCANS - 1, with its photo.
+    Runs before the insert, so after it the table holds exactly KEEP_SCANS rows."""
+    r = c.get(f"{config.SUPABASE_URL}/rest/v1/scans", headers=_h(), params={
+        "select": "id,image_path", "order": "created_at.desc,id.desc",
+        "offset": str(config.KEEP_SCANS - 1), "limit": "1000"})
+    r.raise_for_status()
+    old = r.json()
+    for row in old:
+        if row.get("image_path"):
+            c.delete(f"{config.SUPABASE_URL}/storage/v1/object/{config.SUPABASE_BUCKET}/{row['image_path']}", headers=_h())
+    if old:
+        ids = ",".join(row["id"] for row in old)
+        c.delete(f"{config.SUPABASE_URL}/rest/v1/scans", headers=_h(), params={"id": f"in.({ids})"}).raise_for_status()
 
 
 def save_scan(result: ScanResult, image_bytes: Optional[bytes] = None,
@@ -28,6 +47,10 @@ def save_scan(result: ScanResult, image_bytes: Optional[bytes] = None,
     sid = str(uuid.uuid4())
     try:
         with httpx.Client(timeout=20) as c:
+            try:
+                _prune(c)
+            except Exception:  # the schema's trigger is the backstop for the rows; never block the scan
+                log.exception("could not prune old scans")
             image_path = None
             if image_bytes:
                 path = f"{sid}.{_EXT.get(content_type, 'jpg')}"

@@ -130,7 +130,18 @@
         "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
       ],
       "raw_text": "Crunchy Bites\nCream Biscuits\nNet Wt. 150 g\nMRP Rs. 30.00 (Inclusive of all taxes)\nMfg: 03/2026   Best Before 6 months from packing\nManufactured by: Sunrise Foods Pvt. Ltd., Plot 14, Industrial Area, Nashik, Maharashtra - 422010\nFor queries contact: 1800-123-4567 / care@sunrisefoods.com",
-      "avg_ocr_confidence": null
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "biscuits",
+        "category_label": "Biscuits",
+        "source": "user",
+        "measure": "weight",
+        "net_quantity_unit": "g / kg",
+        "size_table": "Table I (by net quantity)",
+        "rule7_note": "Rule 7 numeral height would be checked against Table I (by net quantity); skipped for every product (team decision: a photo has no real-world scale)."
+      }
     }
   },
   {
@@ -264,7 +275,18 @@
         "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
       ],
       "raw_text": "Chai Garden Premium\nTea\nNet Wt. approx 120g\nMRP Rs. 85.00\nMarketed by: Chai Garden Ltd., Kolkata\nPkd: Jan 2026",
-      "avg_ocr_confidence": null
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "tea",
+        "category_label": "Tea",
+        "source": "user",
+        "measure": "weight",
+        "net_quantity_unit": "g / kg",
+        "size_table": "Table I (by net quantity)",
+        "rule7_note": "Rule 7 numeral height would be checked against Table I (by net quantity); skipped for every product (team decision: a photo has no real-world scale)."
+      }
     }
   },
   {
@@ -398,7 +420,18 @@
         "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
       ],
       "raw_text": "ZOOMO BLAST\nNet Vol. 330 ml\nMRP Rs. 20.00 (Incl. of all taxes)\nMfd: 04/2026\nManufactured by: Zoomo Industries Pvt. Ltd., Pune, Maharashtra - 411001\nCustomer care: 1800 233 4455",
-      "avg_ocr_confidence": null
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "aerated_drinks",
+        "category_label": "Aerated / carbonated drinks",
+        "source": "user",
+        "measure": "volume",
+        "net_quantity_unit": "ml / l",
+        "size_table": "Table I (by net quantity)",
+        "rule7_note": "Rule 7 numeral height would be checked against Table I (by net quantity); skipped for every product (team decision: a photo has no real-world scale)."
+      }
     }
   },
   {
@@ -535,7 +568,18 @@
         "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
       ],
       "raw_text": "Glow Shampoo\nNet Vol. 8 ml",
-      "avg_ocr_confidence": null
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "other",
+        "category_label": "Other / not listed",
+        "source": "user",
+        "measure": "volume",
+        "net_quantity_unit": "ml / l",
+        "size_table": "Table I (by net quantity)",
+        "rule7_note": "Rule 7 numeral height would be checked against Table I (by net quantity); skipped for every product (team decision: a photo has no real-world scale)."
+      }
     }
   },
   {
@@ -669,7 +713,159 @@
         "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
       ],
       "raw_text": "Fresh Farm Eggs\nNet Qty: 2 dozen\nMRP Rs. 160.00 (Inclusive of all taxes)\nPacked by: Green Valley Farms, Hosur, Tamil Nadu - 635109\nPkd: 10/2026\nCall 080 2345 6789",
-      "avg_ocr_confidence": null
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "other",
+        "category_label": "Other / not listed",
+        "source": "user"
+      }
+    }
+  },
+  {
+    "name": "Notebook sticker (real OCR text)",
+    "request": {
+      "text": "Plot No. २६७/१६A २६७/१६B, Kiadb Industrial Area, १४० Pages MRP: ₹ ६0.0०\n२nd Road, २nd Phase, Ramanagar District, (Incl. of Taxes)\nHarohalli - 562112, (Inclusive of both end sheets)\nBDOK BHASKAR TECH Help line : 080-29761413 Email: bhaskarbook@yahoo in Size ३0x18Cms 0 700721 644803",
+      "category": "auto",
+      "pack_type": null
+    },
+    "response": {
+      "scan_id": null,
+      "input_mode": "text",
+      "category": "notebook",
+      "pack_type": null,
+      "verdict": "NON_COMPLIANT",
+      "summary": {
+        "PASS": 5,
+        "FAIL": 1,
+        "REVIEW": 1,
+        "NOT_APPLICABLE": 3,
+        "EXEMPT": 0
+      },
+      "exemption": null,
+      "fields": [
+        {
+          "field": "legibility",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "Text input: there is no OCR confidence to judge legibility from.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "language",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 9",
+          "detail": "English letters: 163, Devanagari letters: 0.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "manufacturer",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "Plot No. 267/16A 267/16B, Kiadb Industrial Area, 140 Pages MRP: ₹ 60.00 2nd Road, 2nd Phase, Ramanagar District, (Incl. of Taxes) Harohalli - 562112",
+          "rule_reference": "Rule 6(1)(a)",
+          "detail": "No 'Manufactured / Packed by' wording, but a name and full address with PIN code are printed, which Rule 6(1)(a) asks for. Confirm the name is the manufacturer or packer.",
+          "sub_case": "IMPLIED_BY_ADDRESS",
+          "confidence": 1.0
+        },
+        {
+          "field": "generic_name",
+          "status": "REVIEW",
+          "violation_code": "LOW_CONFIDENCE",
+          "detected_text": "Pages",
+          "rule_reference": "Rule 6(1)(b)",
+          "detail": "Only 'Pages' was read, which hints at the product type but is not its common name (for example 'Notebook'). The name is often printed on the cover or spine: scan that side too, or have a person confirm.",
+          "sub_case": "WEAK_EVIDENCE",
+          "confidence": 1.0
+        },
+        {
+          "field": "net_quantity",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "140 Pages",
+          "rule_reference": "Rule 6(1)(c)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "mfg_date",
+          "status": "FAIL",
+          "violation_code": "MISSING",
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(d)",
+          "detail": "No month + year of manufacture or packing found. If it is printed elsewhere on the pack (back cover, flap, base), add a photo of that part too.",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "mrp",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "MRP: ₹ 60.00",
+          "rule_reference": "Rule 6(1)(e)",
+          "detail": "Wording is 'Incl. of Taxes'; the Rules use 'inclusive of all taxes'. Accepted, but the full wording is safer.",
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "dimensions",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 6(1)(f)",
+          "detail": "Dimensions are only required for size-dependent goods (bedsheets, towels).",
+          "sub_case": null,
+          "confidence": null
+        },
+        {
+          "field": "consumer_care",
+          "status": "PASS",
+          "violation_code": null,
+          "detected_text": "080-29761413",
+          "rule_reference": "Rule 6(2)",
+          "detail": null,
+          "sub_case": null,
+          "confidence": 1.0
+        },
+        {
+          "field": "pack_size",
+          "status": "NOT_APPLICABLE",
+          "violation_code": null,
+          "detected_text": null,
+          "rule_reference": "Rule 5 / Second Schedule",
+          "detail": "No standard pack size table for this category.",
+          "sub_case": null,
+          "confidence": null
+        }
+      ],
+      "limitations": [
+        "Rule 7 (numeral height) is not checked: a photo has no real-world scale. This is a stated team decision.",
+        "Rule 8 (clear space around the net quantity) is not checked.",
+        "Language (Rule 9) is checked on the whole label, not per declaration.",
+        "Legibility and contrast are approximated from OCR confidence, not measured directly.",
+        "Results depend on OCR quality; low-confidence fields are sent to human review instead of being passed or failed."
+      ],
+      "raw_text": "Plot No. 267/16A 267/16B, Kiadb Industrial Area, 140 Pages MRP: ₹ 60.00\n2nd Road, 2nd Phase, Ramanagar District, (Incl. of Taxes)\nHarohalli - 562112, (Inclusive of both end sheets)\nBDOK BHASKAR TECH Help line : 080-29761413 Email: bhaskarbook@yahoo.in Size 30x18Cms 0 700721 644803",
+      "avg_ocr_confidence": null,
+      "warnings": [],
+      "images_used": 1,
+      "product": {
+        "category": "notebook",
+        "category_label": "Notebook / book / paper stationery (sold by pages)",
+        "source": "detected from the label text",
+        "measure": "count",
+        "net_quantity_unit": "a plain count (pages, pieces, sheets, pairs, N)",
+        "size_table": "Table II (by display panel area)",
+        "rule7_note": "Rule 7 numeral height would be checked against Table II (by display panel area); skipped for every product (team decision: a photo has no real-world scale)."
+      }
     }
   }
 ]

@@ -6,11 +6,14 @@ Rule 7 / Rule 8 are deliberately NOT implemented (team decision, see LIMITATIONS
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 from . import config
+from .classify import MEASURE, infer_category, measure_from_quantity, product_info
 from .data import (
+    CATEGORIES,
     CATEGORY_KEYS,
     DATE_EXEMPT_CATEGORIES,
     DIMENSION_CATEGORIES,
@@ -33,6 +36,8 @@ from .extract import (
     script_counts,
 )
 from .models import FieldResult, ScanResult
+
+log = logging.getLogger("complens.engine")
 
 REF = {
     "legibility": "Rule 9",
@@ -136,6 +141,11 @@ def check_language(ctx: Ctx) -> FieldResult:
 # ------------------------------------------------------------------ Rule 6
 def check_manufacturer(ctx: Ctx) -> FieldResult:
     m = find_manufacturer(ctx.lab)
+    if m.implicit:
+        return _fin(_res("manufacturer", "PASS", hit=m.hit, sub_case="IMPLIED_BY_ADDRESS",
+                         detail="No 'Manufactured / Packed by' wording, but a name and full address with PIN code "
+                                "are printed, which Rule 6(1)(a) asks for. Confirm the name is the manufacturer "
+                                "or packer."), ctx)
     if not (m.has_manufacturer or m.has_importer or m.has_marketer):
         return _absent(ctx, "manufacturer", "No manufacturer / packer / importer name found.")
     if not m.has_manufacturer and not m.has_importer:
@@ -155,6 +165,14 @@ def check_generic_name(ctx: Ctx) -> FieldResult:
     g = find_generic_name(ctx.lab, ctx.category)
     if g.found:
         return _fin(_res("generic_name", "PASS", hit=g.hit, detail=f"Matched '{g.keyword}'."), ctx)
+    if g.weak:
+        return FieldResult(
+            field="generic_name", status="REVIEW", violation_code="LOW_CONFIDENCE",
+            rule_reference=REF["generic_name"], sub_case="WEAK_EVIDENCE", detected_text=g.hit.text,
+            confidence=g.hit.conf,
+            detail=f"Only '{g.hit.text}' was read, which hints at the product type but is not its common name "
+                   "(for example 'Notebook'). The name is often printed on the cover or spine: scan that side "
+                   "too, or have a person confirm.")
     if ctx.category == "other":
         return FieldResult(
             field="generic_name", status="REVIEW", violation_code="LOW_CONFIDENCE",
@@ -188,7 +206,8 @@ def check_mfg_date(ctx: Ctx) -> FieldResult:
         if d.only_expiry:
             return _absent(ctx, "mfg_date", "Only an expiry / best-before date was found.",
                            sub_case="ONLY_EXPIRY_DATE")
-        return _absent(ctx, "mfg_date", "No month + year of manufacture or packing found.")
+        return _absent(ctx, "mfg_date", "No month + year of manufacture or packing found. If it is printed "
+                       "elsewhere on the pack (back cover, flap, base), add a photo of that part too.")
     note = None if d.near_keyword else "Date found but no Mfg/Pkd wording next to it; it could be another date."
     return _fin(_res("mfg_date", "PASS", hit=d.hit, detail=note), ctx)
 
@@ -196,11 +215,23 @@ def check_mfg_date(ctx: Ctx) -> FieldResult:
 def check_mrp(ctx: Ctx) -> FieldResult:
     m = find_mrp(ctx.lab)
     if not m.found:
+        if m.keyword_without_amount:
+            return _absent(ctx, "mrp", "The words 'MRP' / 'price' appear but no amount could be read next to them.",
+                           sub_case="AMOUNT_UNREADABLE")
         return _absent(ctx, "mrp", "No retail price found.")
+    if m.amount is not None and m.amount <= 0:
+        return _fin(_res("mrp", "FAIL", "FORMAT_ERROR", m.hit, sub_case="ZERO_PRICE",
+                         detail="The price reads as zero. A definite retail price is required."), ctx)
     if not m.tax_phrase:
         return _fin(_res("mrp", "FAIL", "FORMAT_ERROR", m.hit, sub_case="MISSING_TAX_PHRASE",
                          detail="Price is present but 'inclusive of all taxes' is not stated next to it."), ctx)
-    return _fin(_res("mrp", "PASS", hit=m.hit), ctx)
+    notes = []
+    if not m.tax_has_all:
+        notes.append("Wording is 'Incl. of Taxes'; the Rules use 'inclusive of all taxes'. Accepted, but the "
+                     "full wording is safer.")
+    if not m.has_mrp_keyword:
+        notes.append("A price was found without the word 'MRP' next to it.")
+    return _fin(_res("mrp", "PASS", hit=m.hit, detail=" ".join(notes) or None), ctx)
 
 
 def check_dimensions(ctx: Ctx) -> FieldResult:
@@ -251,12 +282,31 @@ CHECKS = {
 }
 
 
+def _safe_check(name: str, ctx: Ctx) -> FieldResult:
+    """One broken check must never take the whole report down: it becomes a REVIEW instead."""
+    try:
+        return CHECKS[name](ctx)
+    except Exception:  # noqa: BLE001 - deliberate catch-all, logged with the traceback
+        log.exception("check %s crashed", name)
+        return FieldResult(field=name, status="REVIEW", violation_code="LOW_CONFIDENCE", rule_reference=REF[name],
+                           sub_case="CHECK_ERROR",
+                           detail="This check hit an internal error, so it could not be decided. A person should look.")
+
+
+def _exemption_safe(category: str, qty: NetQty) -> Tuple[Optional[str], Optional[str]]:
+    try:
+        return exemption_level(category, qty)
+    except Exception:  # noqa: BLE001
+        log.exception("exemption check crashed")
+        return None, None
+
+
 # ------------------------------------------------------------------ Rule 26
 def exemption_level(category: str, qty: NetQty) -> Tuple[Optional[str], Optional[str]]:
     """Returns ('FULL'|'REDUCED'|None, reason)."""
     if category in FULL_EXEMPT_CATEGORIES:
         return "FULL", FULL_EXEMPT_CATEGORIES[category]
-    if qty.kind == "std" and qty.base_value is not None and qty.base_unit in ("g", "ml"):
+    if qty.kind == "std" and qty.base_value is not None and qty.base_unit in ("g", "ml") and qty.labelled:
         v, u = qty.base_value, qty.base_unit
         if v <= 10:
             return "FULL", f"Net quantity {v:g}{u} is 10{u} or less (very small package)"
@@ -277,9 +327,30 @@ def analyze(
     if category not in CATEGORY_KEYS:
         raise ValueError(f"Unknown category '{category}'")
     lab = LabelText(lines)
-    ctx = Ctx(lab, category, pack_type, find_net_quantity(lab), from_ocr)
+    warnings: List[str] = []
+    labels = dict(CATEGORIES)
+    try:
+        guess = infer_category(lab.text)
+    except Exception:  # noqa: BLE001
+        log.exception("category inference crashed")
+        guess = None
+    source = "user"
+    if category == "auto":
+        category, source = (guess, "detected from the label text") if guess else ("other", "not detected")
+    elif category != "other" and guess and guess != category:
+        warnings.append(f"You chose '{labels[category]}', but the label text looks like '{labels[guess]}'. "
+                        "Check the category: it decides which rules apply.")
+    measure = MEASURE.get(category)
+    try:
+        qty = find_net_quantity(lab, measure)
+    except Exception:  # noqa: BLE001
+        log.exception("net quantity extraction crashed")
+        qty = NetQty("none")
+    if measure is None:
+        measure = measure_from_quantity(qty.kind, qty.base_unit)
+    ctx = Ctx(lab, category, pack_type, qty, from_ocr)
 
-    level, reason = exemption_level(category, ctx.qty)
+    level, reason = _exemption_safe(category, ctx.qty)
     results: List[FieldResult] = []
     for name in FIELD_ORDER:
         if level == "FULL":
@@ -287,7 +358,7 @@ def analyze(
         elif level == "REDUCED" and name not in ("net_quantity", "mrp", "language", "legibility"):
             results.append(_exempt(name, reason))
         else:
-            results.append(CHECKS[name](ctx))
+            results.append(_safe_check(name, ctx))
 
     summary = {s: sum(1 for r in results if r.status == s)
                for s in ("PASS", "FAIL", "REVIEW", "NOT_APPLICABLE", "EXEMPT")}
@@ -311,6 +382,8 @@ def analyze(
         limitations=LIMITATIONS,
         raw_text=lab.text,
         avg_ocr_confidence=lab.avg_conf if from_ocr else None,
+        warnings=warnings,
+        product=product_info(category, labels[category], source, measure),
     )
 
 

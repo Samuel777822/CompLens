@@ -1,4 +1,5 @@
--- Run this once in the Supabase SQL editor.
+-- CompLens database. Run this once in the Supabase SQL editor (safe to run again).
+-- It keeps only the LAST 10 scans: when the 11th arrives, the oldest one is removed.
 
 create table if not exists public.scans (
   id                 uuid primary key default gen_random_uuid(),
@@ -16,13 +17,27 @@ create table if not exists public.scans (
 );
 
 create index if not exists scans_created_at_idx on public.scans (created_at desc);
-create index if not exists scans_verdict_idx    on public.scans (verdict);
 
 -- The backend uses the service-role key (bypasses RLS). With RLS on and no policies,
 -- nobody else (anon / authenticated keys) can read or write this table.
 alter table public.scans enable row level security;
 
--- Private bucket for uploaded label photos.
+-- Keep the newest 10 rows. The app also deletes the old photo from storage before it inserts;
+-- this trigger is the backstop so the table can never grow past 10, whatever writes to it.
+create or replace function public.keep_last_10_scans() returns trigger
+language plpgsql set search_path = public as $$
+begin
+  delete from public.scans
+  where id in (select id from public.scans order by created_at desc, id desc offset 10);
+  return null;
+end $$;
+
+drop trigger if exists scans_keep_last_10 on public.scans;
+create trigger scans_keep_last_10
+  after insert on public.scans
+  for each statement execute function public.keep_last_10_scans();
+
+-- Private bucket for uploaded label photos (the app removes a photo together with its scan).
 insert into storage.buckets (id, name, public)
 values ('label-images', 'label-images', false)
 on conflict (id) do nothing;

@@ -2,6 +2,7 @@
 from typing import Optional, Tuple
 
 CATEGORIES = [
+    ("auto", "Auto-detect from the label (recommended)"),
     ("other", "Other / not listed"),
     ("tea", "Tea"),
     ("biscuits", "Biscuits"),
@@ -12,6 +13,9 @@ CATEGORIES = [
     ("aerated_drinks", "Aerated / carbonated drinks"),
     ("bedsheet", "Bedsheet"),
     ("towel", "Towel"),
+    ("notebook", "Notebook / book / paper stationery (sold by pages)"),
+    ("fabric", "Fabric / cloth (sold by length)"),
+    ("tiles", "Tiles (sold by area / count)"),
     ("bidi", "Bidi"),
     ("incense", "Incense sticks"),
     ("lpg_cylinder", "LPG cylinder (14.2 kg / 5 kg PSU)"),
@@ -24,7 +28,7 @@ CATEGORY_KEYS = {k for k, _ in CATEGORIES}
 # Rule 6(1)(d): month/year of manufacture not required for these
 DATE_EXEMPT_CATEGORIES = {"bidi", "incense", "lpg_cylinder"}
 # Rule 6(1)(f): dimensions only apply to these
-DIMENSION_CATEGORIES = {"bedsheet", "towel"}
+DIMENSION_CATEGORIES = {"bedsheet", "towel", "fabric", "tiles"}
 # Rule 26: whole-package exemptions decided by category
 FULL_EXEMPT_CATEGORIES = {
     "fast_food": "Packed directly by restaurants/hotels for immediate sale",
@@ -41,7 +45,15 @@ GENERIC_KEYWORDS = {
     "aerated_drinks": ["aerated", "carbonated", "soft drink", "drink", "beverage", "soda", "cola", "juice"],
     "bedsheet": ["bed sheet", "bedsheet", "bed linen", "sheet"],
     "towel": ["towel"],
+    "fabric": ["fabric", "cloth", "suiting", "shirting"],
+    "tiles": ["tile"],
+    "notebook": ["notebook", "note book", "exercise book", "long book", "register", "copy", "diary",
+                 "journal", "jotter", "writing pad", "drawing book", "practical book", "graph book",
+                 "record book", "composition book", "spiral"],
 }
+# Only a hint about what the product is (a brand such as "Book Tech" or the word "Pages" does not
+# name the commodity). Seen alone, these send the field to a human instead of passing it.
+WEAK_GENERIC_WORDS = ["pages", "page", "sheets", "ruled", "unruled", "single line", "double line", "four line", "book"]
 # Used for category "other" and as a fallback for every category
 GENERAL_GENERIC_WORDS = [
     "biscuit", "cookie", "tea", "coffee", "salt", "sugar", "rice", "flour", "atta", "maida", "suji",
@@ -49,6 +61,16 @@ GENERAL_GENERIC_WORDS = [
     "soap", "shampoo", "detergent", "toothpaste", "cream", "lotion", "powder", "noodles", "pasta",
     "masala", "spice", "snack", "chips", "namkeen", "chocolate", "candy", "sauce", "ketchup", "jam",
     "pickle", "dal", "pulses", "egg", "fruit", "vegetable", "wheat", "mustard", "sunflower", "coconut", "honey", "cereal", "oats", "cornflakes", "bread", "cake", "paneer",
+    "notebook", "note book", "exercise book", "register", "diary", "pencil", "pen", "eraser", "sharpener",
+    "marker", "crayon", "stapler", "envelope", "paper", "glue", "ink",
+    "shampoo", "conditioner", "face wash", "facewash", "hair oil", "deodorant", "perfume", "talcum", "sanitizer",
+    "toothbrush", "mouthwash", "shaving", "razor", "sunscreen", "moisturiser", "moisturizer", "serum", "lipstick",
+    "cleaner", "phenyl", "disinfectant", "bleach", "dishwash", "agarbatti", "incense", "candle", "matchbox", "matches",
+    "battery", "bulb", "cable", "wire", "pipe", "paint", "adhesive", "putty", "plywood", "fevicol", "tape",
+    "shoe", "shoes", "sock", "socks", "shirt", "towel", "bedsheet", "pillow", "blanket", "mat", "brush", "bottle", "toy",
+    "biscuits", "wafer", "rusk", "muesli", "tea", "coffee", "ghee", "paneer", "yogurt", "lassi", "buttermilk",
+    "vinegar", "tomato", "soup", "dalia", "poha", "besan", "jaggery", "gur", "turmeric", "chilli", "cumin", "pepper",
+    "fertilizer", "pesticide", "seeds", "cattle feed", "pet food", "vitamin", "supplement", "protein",
 ]
 
 

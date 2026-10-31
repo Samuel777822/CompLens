@@ -7,3 +7,8 @@ venv/
 .EasyOCR/
 *.egg-info/
 .DS_Store
+
+# PyCharm / editor files
+.idea/
+*.iml
+.vscode/
